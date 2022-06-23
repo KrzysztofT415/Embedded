@@ -1,0 +1,28 @@
+#!/bin/bash
+# LINK ALL USED FILES FROM LIB FOLDER
+arr=(${VSCA_SKETCH//\// })
+dir=${VSCA_SKETCH:0:${#VSCA_SKETCH} - ${#arr[${#arr[@]} - 1]} - 1}
+
+inc=`grep -R "include \"" ${VSCA_SKETCH}`
+
+link () {
+    inc_e=$*
+    inc_a=(${inc_e//\#include \"/ })
+    for inc_s in ${inc_a[@]}
+    do
+        inc_t=(${inc_s//./ })
+        inc_f=${inc_s:0:${#inc_s} - ${#inc_t[${#inc_t[@]} - 1]} - 1}
+        if [[ $inc_f != "lib" ]]
+        then
+            ln -f "lib/${inc_f}."* $dir
+
+            ret=`grep -R "include \"" "lib/${inc_f}.h"`
+            if [[ $ret != "" ]]
+            then
+                link $ret
+            fi
+        fi
+    done
+}
+
+link $inc

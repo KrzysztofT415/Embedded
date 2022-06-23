@@ -1,0 +1,8 @@
+{
+    "sketch": "7_Multi/7_Multi.ino",
+    "board": "arduino:avr:uno",
+    "port": "/dev/ttyS3",
+    "prebuild": "./preBuild.sh",
+    "postbuild": "./postBuild.sh",
+    "intelliSenseGen": "disable"
+}
